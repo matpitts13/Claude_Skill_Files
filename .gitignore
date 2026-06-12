@@ -1,0 +1,23 @@
+# ── Sensitive auth ────────────────────────────────────────────────────────────
+.credentials.json
+
+# ── Per-session / per-machine data ────────────────────────────────────────────
+sessions/
+session-env/
+file-history/
+telemetry/
+usage-data/
+shell-snapshots/
+backups/
+ide/
+.last-cleanup
+
+# ── Per-project memory (machine-specific paths & personal info) ────────────────
+projects/
+
+# ── Active plan files (transient, project-specific) ──────────────────────────
+plans/
+
+# ── OS ────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
