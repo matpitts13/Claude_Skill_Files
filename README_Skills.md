@@ -171,4 +171,4 @@ Used by `orchestrator` for significant library doc reading or unfamiliar code ex
 ## Hooks
 
 #### `hooks/block-dangerous.ps1`
-Blocks patterns like `git push --force`, `git reset --hard`, `DROP TABLE`, `--no-verify`, staging `.env` files. Must be manually wired in `settings.json` — see `STEVE_README.md` for the hook config format.
+Asks for your approval before patterns like `git push --force`, `git reset --hard`, `DROP TABLE`, `--no-verify`, staging `.env` files. Wired in `settings.json` (PreToolUse on Bash/PowerShell). See `STEVE_README.md`.

@@ -65,44 +65,14 @@ This detects the stack, loads the relevant language rules, checks for existing t
 │   ├── reviewer.md        ← Independent code review subagent
 │   └── researcher.md      ← Codebase exploration subagent
 └── hooks/
-    └── block-dangerous.ps1 ← Pre-tool hook (manual wire-up needed)
+    └── block-dangerous.ps1 ← Pre-tool safety hook (wired in settings.json)
 ```
 
 ## Block-dangerous hook
 
-The `hooks/block-dangerous.ps1` script blocks dangerous patterns (force-push, hard reset, DROP TABLE without WHERE, etc.) but must be wired up manually in `settings.json`:
+`hooks/block-dangerous.ps1` runs before every Bash/PowerShell call (wired in `settings.json` under `hooks.PreToolUse`). It reads the tool call as JSON from stdin, and on a dangerous pattern (force-push, hard reset, rebase, `git clean -f`, DROP TABLE, DELETE without WHERE, `--no-verify`, staging `.env`/keys/`chronicle.db`) it returns `permissionDecision: "ask"`.
 
-```json
-{
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "powershell -NonInteractive -File C:\\Users\\mat_o\\.claude\\hooks\\block-dangerous.ps1 -ToolName Bash -ToolInput $INPUT"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-Check Claude Code documentation for the exact `$INPUT` variable syntax before enabling.
-
-### Override (for legitimate force-push, reset, etc.)
-
-The hook is overridable via an environment variable. **Claude must ask for explicit user permission before setting this.**
-
-```powershell
-$env:STEVE_ALLOW_DANGEROUS = "1"   # allow for this shell session
-# ... do the thing ...
-$env:STEVE_ALLOW_DANGEROUS = ""    # clear immediately after
-```
-
-The override applies only to the current shell session — it does not persist across restarts. Claude will not set it without the user explicitly saying to allow the operation.
+There is no override variable: you approve or reject that one command in the permission prompt, even in auto mode. Edit `$BLOCKED` in the script to change patterns.
 
 ## Skill registration
 

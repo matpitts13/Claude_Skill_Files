@@ -7,11 +7,13 @@ Personal Claude Code configuration: global instructions, the Steve skill system,
 ```
 ~/.claude/
 ├── CLAUDE.md              ← Global Claude instructions (Steve system registered here)
-├── settings.json          ← Permissions
+├── settings.json          ← Model, hooks (safety, chronicle, graph refresh)
 ├── skills/                ← Skill library (auto-invoked or slash-command triggered)
-├── commands/              ← Slash commands (/ship, /review, /commit, etc.)
+├── commands/              ← Slash commands (/ship, /review, /setup-machine, etc.)
 ├── agents/                ← Named subagents (reviewer, researcher)
-└── hooks/                 ← Pre-tool safety hooks
+├── hooks/                 ← Pre-tool safety hook
+├── tools/                 ← Chronicle (SQLite session history) indexer + query
+└── NEW_MACHINE.md         ← Full setup for another PC
 ```
 
 ## Steve skill system
@@ -20,9 +22,6 @@ See [STEVE_README.md](STEVE_README.md) for the full overview of the Steve orches
 
 ## Setup on a new machine
 
-1. Clone this repo to `~/.claude`:
-   ```
-   git clone https://github.com/matpitts13/Claude_Skill_Files.git ~/.claude
-   ```
-2. Open Claude Code — CLAUDE.md is picked up automatically.
-3. Run `/init-steve` in any project to onboard it.
+See **[NEW_MACHINE.md](NEW_MACHINE.md)**: tools, cloning into an existing `~/.claude`, rebuilding the chronicle DB, and copying the things that can't live in a public repo (memory, `.env`, signing keys). Once the repo is in place, `/setup-machine` checks every step.
+
+Then run `/init-steve` in any project to onboard it.

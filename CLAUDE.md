@@ -98,6 +98,7 @@ These skills activate automatically when conditions are met:
 - `/autotest` — generate + run full automated test suite
 - `/sdd` — interview → Software Design Document
 - `/status` — project health summary (`--page` publishes it as a private dashboard)
+- `/setup-machine` — bring another PC up to working Steve state (checklist in `~/.claude/NEW_MACHINE.md`: tools, chronicle DB, memory copy, per-project secrets)
 - `/bakeoff` — build 2–3 competing approaches in worktrees, independent judge picks (manual, expensive)
 - `/release` — full release checklist
 - `/ci-setup` — set up or review CI pipeline
