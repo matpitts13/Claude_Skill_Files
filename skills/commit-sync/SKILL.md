@@ -25,12 +25,15 @@ Invoked by orchestrator after code-review passes. This is the gated commit path 
    ```
    Types: `feat` / `fix` / `refactor` / `test` / `docs` / `chore`
 4. **Commit.**
-5. **Sync** — `git pull --ff-only`. If behind and ff fails, try `git pull --no-rebase`. If that has conflicts, try `git pull --rebase` as last resort. If rebase conflicts: abort, stop, report.
+5. **Sync** — try in order, stop at first success:
+   1. `git pull --ff-only` (preferred — no new commit)
+   2. `git pull --no-rebase` (merge commit). If this conflicts: `git merge --abort`, then try step 3.
+   3. `git pull --rebase` (last resort). If this conflicts: `git rebase --abort`, STOP, print the conflicting files, report — do not push.
 6. **Push.** Never force-push. If push still fails after sync: report, stop.
 
 ## Two-strike rule
 
-Pull fails twice → stop and report. Don't loop.
+Canonical version in `~/.claude/CLAUDE.md`. Concrete trigger here: pull fails twice → stop and report, don't loop.
 
 ## Never
 

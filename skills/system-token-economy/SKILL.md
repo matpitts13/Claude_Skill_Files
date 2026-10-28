@@ -19,6 +19,10 @@ Passive guidelines applied in every session. No explicit invocation needed.
 
 **Skip affirmations.** No "Great!", "Sure!", "I'll do that." responses. Start with the action or the answer.
 
+## Graph first (hard rule)
+
+See the "Graph first" and "Lookup ladder" sections in `~/.claude/CLAUDE.md` — canonical there, not restated here to avoid drift. Short version: `graphify` CLI before grep/glob for relationship *and* content questions alike; Grep is the last resort, not a parallel option.
+
 ## Context budget signals
 
 - **Compaction notice** in context → trim reading habits immediately: switch to grep-first, read-second.

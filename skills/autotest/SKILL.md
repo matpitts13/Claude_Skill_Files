@@ -19,6 +19,10 @@ Also read `autotest/philosophy.md` (extended notes) and `autotest/harness.md` (p
 - **`tests/`** — hand-crafted tests. **Never touched by autotest.**
 - **`*.test.ts` adjacent to module** — unit tests. Autotest may generate these but only for modules with zero existing tests.
 
+## Resolving the test command
+
+Use `npm run test` / `npm run test:e2e` (the project's own `package.json` scripts), not bare `npx vitest run` / `npx playwright test` — `npx` can resolve a mismatched global version and fail with errors like "Vitest failed to find the runner" even when the suite is actually green.
+
 ## Snapshot before starting
 
 ```
@@ -33,7 +37,7 @@ Before any Playwright tests, write Vitest tests for all IPC channels:
 - Test that each channel rejects invalid input gracefully (no crashes, sensible error response).
 - Use real in-memory SQLite. No mocks.
 
-Run: `npx vitest run tests/autotest/ipc/`
+Run: `npm run test -- tests/autotest/ipc/`
 
 Fix failures before proceeding. If a failure can't be fixed in 2 attempts → park it (see Parking Rules).
 
@@ -44,7 +48,7 @@ For each pure function / utility with no existing test:
 2. Generate test file: `tests/autotest/unit/<module>.test.ts`.
 3. Test happy path + 2 edge cases minimum.
 
-Run: `npx vitest run tests/autotest/unit/`
+Run: `npm run test -- tests/autotest/unit/`
 
 ## Step 3 — Playwright golden paths
 
@@ -56,7 +60,7 @@ Rules:
 - Maximum 3 new Playwright tests per `/autotest` run — don't write tests for the whole app at once.
 - All generated tests go in `tests/autotest/e2e/`.
 
-Run: `npx playwright test tests/autotest/e2e/`
+Run: `npm run test:e2e -- tests/autotest/e2e/`
 
 ## Step 4 — Flaky detection
 

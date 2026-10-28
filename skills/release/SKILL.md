@@ -10,7 +10,7 @@ Invoked via `/release` when preparing to ship a new version.
 ## Pre-release gates (must all pass)
 
 - [ ] `npx tsc --noEmit` — zero errors
-- [ ] `npx vitest run` — all tests pass
+- [ ] `npm run test` — all tests pass (use the project's own script, not bare `npx vitest run` — a mismatched global Vitest can fail with "failed to find the runner" even when the suite is green)
 - [ ] `npm audit --audit-level=high` — no high/critical vulnerabilities
 - [ ] `npm run build` — build succeeds without warnings
 - [ ] Manual smoke test: launch the app, verify the golden paths work

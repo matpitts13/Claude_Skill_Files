@@ -29,13 +29,21 @@ Auto-triggered on any task spanning >1 file or >1 concern. Skip entirely for tri
 | Medium | — | full suite + new tests | code-review → commit-sync |
 | Large | senior-design-gate + senior-estimation | full suite + build + security scan | senior-adr + code-review → commit-sync |
 
+## Trigger-based gates (any size, in addition to the size gates above)
+
+These fire based on what the task touches, independent of Small/Medium/Large classification — call the `Skill` tool for each, same as the size gates:
+
+- **Touches IPC, auth, or file I/O** → `senior-security`, before commit-sync. (The Large-tier "security scan" in the table above is the full audit; this is the lighter always-on check for Small/Medium work in these areas.)
+- **Task is primarily a bug fix** → `debug-protocol` instead of freeform investigation.
+- **Any task that writes code** → load `language-rules` (via `stack-detect` if the stack isn't already obvious) before writing it.
+
 ## SDD
 
 If `docs/SDD.md` exists, read it before any medium/large task. Flag contradictions before writing code.
 
 ## Two-strike rule
 
-After 2 distinct failed attempts on the same problem: STOP. Summarize what was tried + 2–3 ranked next options. Wait for pick. Applies to all sub-skills.
+Canonical version in `~/.claude/CLAUDE.md` — applies here unchanged, including to individual sub-skill steps.
 
 ## Snapshot before large work
 

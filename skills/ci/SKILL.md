@@ -35,7 +35,7 @@ jobs:
       - run: npm ci
       - run: npx tsc --noEmit
       - run: npx eslint src --max-warnings 0
-      - run: npx vitest run
+      - run: npm run test
       - run: npm audit --audit-level=high
 ```
 
@@ -57,6 +57,15 @@ Always cache `node_modules` via `actions/setup-node` with `cache: npm`. This sav
 After CI is set up, recommend enabling branch protection on `main`:
 - Require status checks to pass before merging
 - Require branches to be up to date
+
+## Credentials
+
+Prefer short-lived OIDC credentials over long-lived secrets wherever the target supports it (add `permissions: id-token: write` to the job):
+- npm publish → Trusted Publishing (`npm publish --provenance`)
+- VS Code Marketplace → `vsce publish --oidc` (@vscode/vsce ≥ 4.0.2)
+- AWS / Azure / GCP → their official OIDC login actions
+
+Where OIDC isn't available (e.g. Cloudflare `wrangler`), use a narrowly scoped API token in GitHub Secrets — never a global key. When reviewing existing CI, flag any PAT or account-wide key that could be replaced.
 
 ## Never
 

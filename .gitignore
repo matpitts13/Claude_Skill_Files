@@ -21,3 +21,12 @@ plans/
 # ── OS ────────────────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
+
+# Local-only data (chronicle index holds full session transcripts)
+chronicle.db
+cache/
+state/
+uploads/
+plugins/
+skills/synced/
+mcp-needs-auth-cache.json

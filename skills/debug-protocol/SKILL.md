@@ -27,10 +27,7 @@ Run the reproduction case. Run the test suite. Confirm the fix doesn't break exi
 
 ## Two-strike rule
 
-After 2 distinct hypotheses/fixes that don't solve the problem: STOP.
-- Summarize: what was tried, what each attempt revealed, what you now know.
-- List 2–3 ranked next options with one-line reasoning each.
-- Wait for direction.
+Canonical version in `~/.claude/CLAUDE.md`. Concrete trigger here: 2 distinct hypotheses/fixes that don't solve the problem → STOP, summarize what each revealed, list ranked next options, wait for direction.
 
 ## Never
 
