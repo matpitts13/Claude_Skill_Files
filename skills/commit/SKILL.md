@@ -24,7 +24,7 @@ Follow these steps in order. Do not skip steps.
 
 ### Step 0 — Fetch remote state
 
-Run `git fetch origin` to update remote tracking refs. This is always safe and costs nothing.
+If the repo has an `origin` remote, run `git fetch origin` to update remote tracking refs. If it has no remote, skip the sync and push steps and say so.
 Then check divergence:
 
 ```powershell
@@ -33,27 +33,27 @@ $ahead  = (git rev-list @{u}..HEAD --count 2>$null).Trim()
 if ($behind -gt 0) { Write-Host "Behind remote by $behind commit(s). Will sync after committing." }
 ```
 
-If `--no-sync` was given, skip the divergence note and skip Step 7b entirely.
+If `--no-sync` was given, skip the divergence note and skip Step 7a entirely.
 
 ### Step 1 — Check for large files
 
 Run the following to find files over 1 MB that are not already gitignored:
 
 ```powershell
-git ls-files --others --exclude-standard | ForEach-Object {
-    $size = (Get-Item $_ -ErrorAction SilentlyContinue).Length
+git -c core.quotepath=off ls-files --others --exclude-standard | ForEach-Object {
+    $size = (Get-Item -LiteralPath $_ -ErrorAction SilentlyContinue).Length
     if ($size -gt 1MB) { "$_ ($([math]::Round($size/1MB,1)) MB)" }
 }
 # Also check tracked files
-git ls-files | ForEach-Object {
-    $size = (Get-Item $_ -ErrorAction SilentlyContinue).Length
+git -c core.quotepath=off ls-files | ForEach-Object {
+    $size = (Get-Item -LiteralPath $_ -ErrorAction SilentlyContinue).Length
     if ($size -gt 1MB) { "$_ ($([math]::Round($size/1MB,1)) MB)" }
 }
 ```
 
 If any large files are found, list them and ask the user whether to add them to `.gitignore` or include them. Do not proceed past this step until resolved.
 
-If `--dry-run` was given, print the list and stop here — do not commit.
+If `--dry-run` was given, list them and continue without asking. Steps 2 to 5 also only report during a dry run, and Step 5 is where it stops.
 
 ### Step 2 — Check for deleted assets
 
@@ -119,6 +119,8 @@ If `--dry-run` was given, stop here.
 
 If the user did not provide a commit message, write one yourself: a concise one-liner summarizing the changes (feature, fix, refactor, docs, etc.) based on what `git diff --staged` and `git status` show. Look at `git log --oneline -5` to match the project's existing commit style.
 
+If you are on the default branch and the repo requires pull requests (protected branch, or `CONTRIBUTING` says so), create a branch first and open a PR in Step 7b instead of pushing to the default branch.
+
 Stage the appropriate files — prefer specific paths over `git add -A` when some files should be excluded. Then commit:
 
 ```powershell
@@ -144,7 +146,7 @@ If the commit fails due to a pre-commit hook, fix the underlying issue — do no
 
 Unless `--no-push` was given:
 
-**Step 7a — Sync with remote** (skip if `--no-sync`):
+**Step 7a — Sync with remote** (skip if `--no-sync`, if the branch has no upstream yet, or if Step 0 showed nothing to pull):
 
 If the remote is ahead, sync before pushing. Try in order — stop at first success:
 
@@ -173,6 +175,8 @@ If the remote is ahead, sync before pushing. Try in order — stop at first succ
 git push
 ```
 If the branch has no upstream, push with `-u origin <branch-name>`.
+
+If this branch is for a pull request, open it with `gh pr create`. If `gh` isn't available, tell the user the branch is pushed and the PR still needs opening.
 
 After pushing, confirm success with the commit hash and branch name. End with a one-line summary: what was committed, how it synced (ff / merge / rebase / no sync needed), and where it was pushed.
 

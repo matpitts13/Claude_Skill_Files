@@ -6,8 +6,8 @@ Run the test suite at the appropriate depth.
 ```
 /test           # auto-detect depth from recent changes
 /test small     # lint + typecheck only
-/test medium    # vitest run
-/test large     # full suite + build + npm audit
+/test medium    # the project's test suite
+/test large     # full suite + build + dependency audit
 ```
 
 ## What this does

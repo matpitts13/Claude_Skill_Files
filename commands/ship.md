@@ -6,8 +6,9 @@ Gate + commit + push for the current task. Orchestrated path.
 
 Runs in order:
 1. `code-review` skill — reviews the current diff
-2. If code-review passes: `test-strategy` skill at medium depth
-3. If tests pass: `commit-sync` skill — stages, commits with conventional message, syncs, pushes
+2. If the change touches auth, file handling, or inter-process messaging: `senior-security` skill
+3. If those pass: `test-strategy` skill at medium depth, or large depth for a large change
+4. If tests pass: `commit-sync` skill — stages, commits with conventional message, syncs, pushes
 
 ## Usage
 ```
@@ -21,6 +22,6 @@ After completing a feature or fix and wanting to merge-ready it. This is the ful
 
 ## Stops when
 
-- Code review finds a FAIL item → fix it, then re-run `/ship`
+- Code review or the security check finds a FAIL item → fix it, then re-run `/ship`
 - Tests fail → fix them, then re-run `/ship`
 - Sync conflicts → reports the conflict, stops for manual resolution

@@ -1,7 +1,7 @@
 ---
 name: reviewer
 description: "Independent code reviewer. Reviews a diff with fresh eyes, free of implementation bias. Used by code-review skill for medium/large diffs."
-tools: [Read, Grep, Glob]
+tools: Read, Grep, Glob
 model: sonnet
 ---
 

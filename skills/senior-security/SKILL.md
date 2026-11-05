@@ -5,7 +5,7 @@ description: "Security review for Electron/Node/React code. Checks for IPC vulne
 
 # Senior: Security
 
-Invoked by `orchestrator` on large tasks touching IPC, auth, or file I/O. Also invoked by `/security-review`.
+Invoked by `orchestrator` and `/ship` on any task touching IPC, auth, or file I/O. Also invoked by `/security-review`.
 
 ## Electron-specific checks
 
